@@ -18,16 +18,16 @@ module CD_DC_tb();
   end
 //////////////////////////////
     
-  reg [`N - 1:0] bit_sequence_tb; // Последовательность битов
+  reg [`N - 1:0] bit_sequence_tb; // РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ Р±РёС‚РѕРІ
 
   reg bit_tb;
   wire [1:0] code_tb;
   wire decode_tb;     
 
-  reg [1:0] encoded_sequence_tb [0:22]; // Закодированная последовательность битов
-  reg [22:0] decoded_sequence_tb;       // Декодированная последовательность битов (для проверки)
+  reg [1:0] encoded_sequence_tb [0:22]; // Р—Р°РєРѕРґРёСЂРѕРІР°РЅРЅР°СЏ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ Р±РёС‚РѕРІ
+  reg [22:0] decoded_sequence_tb;       // Р”РµРєРѕРґРёСЂРѕРІР°РЅРЅР°СЏ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ Р±РёС‚РѕРІ (РґР»СЏ РїСЂРѕРІРµСЂРєРё)
 
-  integer i; // Счётчик для цикла for
+  integer i; // РЎС‡С‘С‚С‡РёРє РґР»СЏ С†РёРєР»Р° for
   wire error;
 
   Coder CD ( .clk_i(CLK_tb), .bit_i(bit_tb), .code_o(code_tb) );
@@ -36,14 +36,14 @@ module CD_DC_tb();
   initial begin
 
     bit_sequence_tb = `N'd8201481;
-    $display ( "\n////\nКодирование числа %d", bit_sequence_tb );
+    $display ( "\n////\nРљРѕРґРёСЂРѕРІР°РЅРёРµ С‡РёСЃР»Р° %d", bit_sequence_tb );
 
-    // Цикл кодирования битовой последовательности
+    // Р¦РёРєР» РєРѕРґРёСЂРѕРІР°РЅРёСЏ Р±РёС‚РѕРІРѕР№ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
     for ( i = 0; i < 23; i = i + 1 ) begin
       
       bit_tb = bit_sequence_tb[i];
     
-      @( posedge CLK_tb ); #1; // Ждём сигнал CLOCK и ещё 1 нс (для иммитации реальной задержки в схеме)
+      @( posedge CLK_tb ); #1; // Р–РґС‘Рј СЃРёРіРЅР°Р» CLOCK Рё РµС‰С‘ 1 РЅСЃ (РґР»СЏ РёРјРјРёС‚Р°С†РёРё СЂРµР°Р»СЊРЅРѕР№ Р·Р°РґРµСЂР¶РєРё РІ СЃС…РµРјРµ)
       
       encoded_sequence_tb[i] = code_tb;
       
@@ -52,13 +52,13 @@ module CD_DC_tb();
        decoded_sequence_tb[i] = decode_tb;
        
       if (error) begin
-       $display("Шеф! Всё пропало! Неправильный бит в позиции %d", i);
+       $display("РЁРµС„! Р’СЃС‘ РїСЂРѕРїР°Р»Рѕ! РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ Р±РёС‚ РІ РїРѕР·РёС†РёРё %d", i);
        $finish;
       end
    
     end
     
-    $display ( "\nРезультат декодирования: %d\n////\n", decoded_sequence_tb );
+    $display ( "\nР РµР·СѓР»СЊС‚Р°С‚ РґРµРєРѕРґРёСЂРѕРІР°РЅРёСЏ: %d\n////\n", decoded_sequence_tb );
     $finish;
     
   end
